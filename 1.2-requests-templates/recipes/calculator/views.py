@@ -30,45 +30,16 @@ DATA = {
 #   }
 # }
 
-def omlet(request):
-    context = {
-        'recipe': {
-        
-        'яйца, шт': 2,
-        'молоко, л': 0.1,
-        'соль, ч.л.': 0.5,
-                    }
-    }
-
-  
-
-    return render(request, "calculator/index.html" ,context)
-   
-
-def pasta(request):
-    
+def calculate_view(requests, dish_get):
+    servings = int(requests.GET.get('servings', 1))
+    send_dish = {}
+    for dish, ingredients in DATA.items():
+        if dish_get == dish:
+            for ing, count in ingredients.items():
+                send_dish[ing] = count * servings
 
     context = {
-        'recipe': {
-            'макароны, г': 0.3,
-            'сыр, г': 0.05,
-                    }
-        }
-    return render(request, "calculator/index.html", context)
-   
-
-
-def buter(request):
-    context = {
-    'recipe':{
-        'хлеб, ломтик': 1,
-        'колбаса, ломтик': 1,
-        'сыр, ломтик': 1,
-        'помидор, ломтик': 1,
+        'recipe': send_dish
     }
 
-    }
-    #servings = int(request.GET.get('servings', 1))
-    
-    return render(request, "calculator/index.html", context)
-
+    return render(requests, 'calculator/index.html', context)
